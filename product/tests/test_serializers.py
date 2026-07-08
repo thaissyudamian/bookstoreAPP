@@ -11,7 +11,7 @@ def test_category_factory_cria_categoria():
 @pytest.mark.django_db
 def test_product_serializer_retorna_campos():
     category = CategoryFactory(title="Livros")
-    product = ProductFactory(title="Django REST", price=99.90, category=[category])
+    product = ProductFactory(title="Django REST", price=99, category=[category])
     serializer = ProductSerializer(instance=product)
     data = serializer.data
     assert data["title"] == "Django REST"
