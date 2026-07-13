@@ -6,3 +6,6 @@ class Product(models.Model):
     price = models.PositiveBigIntegerField(null=True)
     active = models.BooleanField(default=True)
     category = models.ManyToManyField("Category", blank=True)
+
+    class Meta:
+        ordering = ['id']
