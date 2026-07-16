@@ -1,0 +1,46 @@
+databases:
+  - name: bookstore-db
+    plan: free
+
+services:
+  - type: web
+    name: bookstore-api
+    runtime: python
+    plan: free
+    branch: continuous-delivery
+    buildCommand: "pip install poetry && poetry config virtualenvs.create false && poetry install --no-root && python manage.py collectstatic --no-input && python manage.py migrate"
+    startCommand: "gunicorn bookstoreapp.wsgi:application"
+    envVars:
+      - key: PYTHON_VERSION
+        value: "3.12.7"
+      - key: SECRET_KEY
+        generateValue: true
+      - key: DEBUG
+        value: "0"
+      - key: DJANGO_ALLOWED_HOSTS
+        fromService:
+          type: web
+          name: bookstore-api
+          property: host
+      - key: SQL_ENGINE
+        value: "django.db.backends.postgresql"
+      - key: SQL_DATABASE
+        fromDatabase:
+          name: bookstore-db
+          property: database
+      - key: SQL_USER
+        fromDatabase:
+          name: bookstore-db
+          property: user
+      - key: SQL_PASSWORD
+        fromDatabase:
+          name: bookstore-db
+          property: password
+      - key: SQL_HOST
+        fromDatabase:
+          name: bookstore-db
+          property: host
+      - key: SQL_PORT
+        fromDatabase:
+          name: bookstore-db
+          property: port

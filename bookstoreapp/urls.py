@@ -18,9 +18,12 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, re_path, include
 from rest_framework.authtoken.views import obtain_auth_token
+from django.views.generic import RedirectView
+
 
 
 urlpatterns = [
+    path('', RedirectView.as_view(url='/bookstore/v1/product/', permanent=False)),
     path('__debug__/', include('debug_toolbar.urls')),
     path('api-token-auth/', obtain_auth_token),
     path('admin/', admin.site.urls),
